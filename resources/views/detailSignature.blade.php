@@ -52,7 +52,7 @@
                                 <p class="card-text">Kota : {{$signature->regionName}}</p>
                                 <p class="card-text">latitude : {{$signature->latitude}}</p>
                                 <p class="card-text">longitude : {{$signature->longitude}}</p>
-                                <p class="card-text">Created : {{$signature->created_at}}</p>
+                                <p class="card-text">Created : {{$signature->created_at}} UTC</p>
 
                                 </div>
                             </div>

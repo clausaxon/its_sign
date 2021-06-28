@@ -16,8 +16,6 @@
 
     <script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
 
-    <script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
-
     <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
 
 
@@ -81,7 +79,7 @@
 
                     @endif
 
-                    <form method="POST" action="{{ route('signaturepad.upload') }}">
+                    <form method="POST" action="{{ route('signaturepad.upload') }}" enctype="multipart/form-data">
 
                         @csrf
 
@@ -118,7 +116,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <input type="file" name="image" placeholder="Choose image" id="image">
+                                <input type="file" name="image" placeholder="Choose image" id="image" accept=".png, .jpg, jpeg">
                             </div>
                         </div>
                         </br>
@@ -162,7 +160,6 @@
 <script type="text/javascript">
 
     var sig = $('#sig').signature({syncField: '#signature64', syncFormat: 'PNG', color:'blue', scale:0.5});
-
     $('#clear').click(function(e) {
 
         e.preventDefault();

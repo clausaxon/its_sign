@@ -36,13 +36,19 @@ class SignaturePadController extends Controller
         }
         //
 
-        $qrcode = QrCode::format('svg')->generate('http://www.simplesoftware.io');
+        // $qrcode = QrCode::format('svg')->generate('http://www.simplesoftware.io');
         $userIp = ('36.70.212.216');
         $locationData = Location::get($userIp);
         $folderPath = storage_path('app/public/upload/');
-        $qrPath = '/img/qr-code/img-' . time() . '.svg';
+        // $qrPath = '/img/qr-code/img-' . time() . '.svg';
         $base = uniqid();
-        if($request->image == null){
+        if($request->hasFile('image')){
+            $extension = $request->file('image')->extension();
+            $base2 = $base . '.'.$extension;
+            $request->file('image')->move($folderPath,$base2);
+            $signature = $base2;
+        }
+        else{
             $image_parts = explode(";base64,", $request->signed);
 
             $image_type_aux = explode("image/", $image_parts[0]);
@@ -51,19 +57,14 @@ class SignaturePadController extends Controller
 
             $image_base64 = base64_decode($image_parts[1]);
 
-            Storage::disk('public')->put($qrPath, $qrcode);
+            // Storage::disk('public')->put($qrPath, $qrcode);
 
             $signature = $base . '.'.$image_type;
             $file = $folderPath . $signature;
-
-            $pass = Crypt::encryptString($request->password);
             file_put_contents($file, $image_base64);
+
         }
-        else{
-            $extension = $request->file('image')->extension();
-            $base2 = $base . '.'.$extension;
-            $request->file('image')->move($folderPath,$base2);
-        }
+        $pass = Crypt::encryptString($request->password);
         $save = new Signature;
         $save->name = $user->name;
         $save->signature = $signature;
@@ -77,19 +78,22 @@ class SignaturePadController extends Controller
         $save->longitude = $locationData->longitude;
         $save->perihal = $request->perihal;
         $save->password = $pass;
+        $current_date_time = \Carbon\Carbon::now()->toDateTimeString();
 
         $data = [
             'signature' => $signature,
             'countryname' => $locationData->countryName,
+            'regionname' => $locationData->regionName,
             'latitude' => $locationData->latitude,
-            'longitude' => $locationData->longitude
+            'longitude' => $locationData->longitude,
+            'created_at' => $current_date_time
         ];
 
         $pdf = PDF::loadView('signaturepdf', $data)->setPaper('a7', 'landscape');
         $path = storage_path('app/public/pdfsignature/');
         $pdf->save($path . '/' . $base . '.pdf');
         $inputFile = storage_path('app/public/pdfsignature/' . $base . '.pdf');
-        $trustedComment = $user->name;
+        $trustedComment = 'Tanda Tangan ini dibuat oleh ' . $user->name . 'pada tanggal dan waktu: ' . $current_date_time . ' UTC';
         $untrustedComment = 'Untrusted comment; can be changed';
         $userpass = $request->userpass;
         $preHash = false; // Set to TRUE to prehash the file
@@ -189,6 +193,6 @@ class SignaturePadController extends Controller
             }
         });
 
-        return back()->with('success', 'Tanda Tangan Berhasil Diubah');
+        return back()->with('success', 'Tanda Tangan Sudah Masuk ke Email anda');
     }
 }
