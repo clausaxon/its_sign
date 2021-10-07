@@ -17,6 +17,7 @@ class CreateSignaturesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('signature');
+            $table->text('sigcode');
             $table->string('ip');
             $table->text('signing');
             $table->text('countryName');
@@ -29,6 +30,7 @@ class CreateSignaturesTable extends Migration
             $table->text('perihal');
             $table->text('password');
             $table->timestamps();
+	    $table->string('qrpath');
         });
     }
 

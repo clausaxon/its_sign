@@ -7,15 +7,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Storage;
 
-
-class MySignatureController extends Controller
+class SignatureViewController extends Controller
 {
     //
     public function index(){
-
-        $signature = DB::table('signatures')->paginate(25);
+        $user = auth()->user();
+        $signature = DB::table('signatures')
+                 ->where('name', $user->name)->paginate(25);
+        // $signature = DB::table('signatures')->paginate(25);
         
-        return view('usersignature',['signature' => $signature]);
+        return view('signatureview',['signature' => $signature]);
 
         // $user = auth()->user();
         // $signature = DB::table('signatures')
@@ -26,14 +27,19 @@ class MySignatureController extends Controller
         // ->with('signature',$getSignature);
     }
     public function cari(Request $request){
-        
+        $user = auth()->user();
         $cari = $request->cari;
 
         $signature = DB::table('signatures')
+        ->where('name', $user->name)
         ->where('sigcode','like',"%".$cari."%")
         ->paginate();
 
-        return view('usersignature',['signature'=> $signature]);
+        // if($signature == ""){
+        //     return redirect()->route('signatureview')
+        //     ->with('warning','No result found');
+        // }
+        return view('signatureview',['signature'=> $signature]);
         
     }
 

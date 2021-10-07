@@ -44,11 +44,12 @@
 
                <div class="card-header">
 
-                   <h5>Silahkan Tanda tangan</h5>
+                   <h5>Masukan tanda tangan dan kode</h5>
 
                </div>
 
                <div class="card-body">
+               <a href="{{ route('dashboard') }}" class="btn btn-success" style="float: left;"><i class="icon-home"></i> < Back to Home</a></br></br>
 
                     @if ($message = Session::get('success'))
 
@@ -79,6 +80,17 @@
 
                         <div class="col-md-12">
 
+                            <div class="form-group">
+                                <label>Kode</label>
+                                <input type="text" class="form-control {{ $errors->has('kode') ? 'error' : '' }}" name="kode" id="kode">
+                                <!-- Error -->
+                                @if ($errors->has('kode'))
+                                <div class="error">
+                                    {{ $errors->first('kode') }}
+                                </div>
+                                @endif
+                            </div>
+
                             <label class="" for="">Signature:</label>
 
                             <br/>
@@ -94,21 +106,6 @@
                                 </div>
                                 @endif
                             </br>
-
-                            <label class="" for="">Pub File:</label>
-
-                            <br/>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="file" name="pubfile" class="{{ $errors->has('pubfile') ? 'error' : '' }}" placeholder="Pub File" id="pubfile">
-                                </div>
-                            </div>
-                            <!-- Error -->
-                            @if ($errors->has('pubfile'))
-                                <div class="error">
-                                    {{ $errors->first('pubfile') }}
-                                </div>
-                                @endif
 
                         </div>
 

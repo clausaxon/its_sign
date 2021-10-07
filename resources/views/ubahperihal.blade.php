@@ -2,7 +2,7 @@
 
 <head>
 
-    <title>Baca Tanda Tangan</title>
+    <title>Ubah Perihal</title>
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css">
 
@@ -44,12 +44,12 @@
 
                <div class="card-header">
 
-                   <h5>Silahkan Masukan Tanda Tangan</h5>
+                   <h5>Ubah Perihal Tanda Tangan</h5>
 
                </div>
 
                <div class="card-body">
-               <a href="{{ route('dashboard') }}" class="btn btn-success" style="float: left;"><i class="icon-home"></i> < Back to Home</a></br></br>
+               <a href="{{ route('signatureview') }}" class="btn btn-success" style="float: left;"><i class="icon-home"></i> < Back to List Tanda Tangan</a></br></br>
 
                     @if ($message = Session::get('success'))
 
@@ -74,34 +74,40 @@
 
                     @endif
 
-                    <form method="POST" action="{{ route('decryptfile.upload') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ url('ubahperihal/ . $signature->id') }}" enctype="multipart/form-data">
 
                         @csrf
 
                         <div class="col-md-12">
+
                             <div class="form-group">
-                                <label>Password</label>
-                                <input type="text" class="form-control {{ $errors->has('password') ? 'error' : '' }}" name="password" id="password">
+                                <label>Perihal Saat Ini : </label> </br>
+                                <input type="text" class="form-control" readonly placeholder="{{$signature->perihal}}" name="kode" id="kode">
                                 <!-- Error -->
-                                @if ($errors->has('password'))
+                            </div>
+
+                            <br/>
+                            <div class="form-group">
+                                <label>Perihal Sekarang : </label></br>
+                                <input type="text" class="form-control {{ $errors->has('perihal') ? 'error' : '' }}" name="perihal" id="perihal">
+                                <!-- Error -->
+                                @if ($errors->has('perihal'))
                                 <div class="error">
-                                    {{ $errors->first('password') }}
+                                    {{ $errors->first('perihal') }}
                                 </div>
                                 @endif
                             </div>
-
-                            <label class="" for="">Signature:</label>
-
-                            <br/>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="file" name="file" placeholder="Choose image" id="file">
-                                </div>
+                            <input type="hidden" id="userid" name="userid" value="{{$signature->id}}">
+                            <div class="form-group">
+                            <label>User Password :</label>
+                            <input type="password" class="form-control {{ $errors->has('userpass') ? 'error' : '' }}" name="userpass" id="userpass">
+                             <!-- Error -->
+                             @if ($errors->has('userpass'))
+                            <div class="error">
+                                {{ $errors->first('userpass') }}
                             </div>
-                            <div class="col-md-12 mb-2">
-                                <!-- <img id="preview-image-before-upload" src="https://www.riobeauty.co.uk/images/product_image_not_found.gif"
-                                    alt="preview image" style="max-height: 250px;"> -->
-                            </div>
+                            @endif
+                        </div>
                         </div>
 
                         <br/>
@@ -129,19 +135,6 @@
 
 $(document).ready(function (e) {
 
-
-   $('#image').change(function(){
-
-    let reader = new FileReader();
-
-    reader.onload = (e) => {
-
-      $('#preview-image-before-upload').attr('src', e.target.result);
-    }
-
-    reader.readAsDataURL(this.files[0]);
-
-   });
 
 });
 

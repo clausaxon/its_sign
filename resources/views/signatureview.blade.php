@@ -14,7 +14,7 @@
 	</style>
 
 	<h3>Cari Tanda Tangan:</h3> </br>
-	<form action="/mysignaturepad/cari" method="GET">
+	<form action="/signatureview/cari" method="GET">
 		<input type="text" name="cari" placeholder="Masukan Kode" value="{{ old('cari') }}">
 		<input type="submit" value="CARI">
 	</form>
@@ -26,7 +26,8 @@
             <th>Kode</th>
 			<th>Nama</th>
 			<th>Perihal</th>
-			<th>Lihat Detail<th/>
+			<th>Lihat Detail</th>
+			<th>Ubah Perihal</th>
 		</tr>
 		@foreach($signature as $s)
 		<tr>
@@ -34,6 +35,7 @@
 			<td>{{ $s->name }}</td>
 			<td>{{ $s->perihal }}</td>
 			<td><a href="{{ url('/signature/'. $s->id) }}" class="btn btn-success">Detail</a></td>
+            <td><a href="{{ url('/ubahperihal/'. $s->id) }}" class="btn btn-success">Ubah Perihal</a></td>
 		</tr>
 		@endforeach
 	</table>

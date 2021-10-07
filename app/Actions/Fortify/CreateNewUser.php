@@ -10,6 +10,7 @@ use Laravel\Jetstream\Jetstream;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MyTestMail;
 use Soatok\Minisign\Core\SecretKey;
+use App\Models\Userkeys;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -37,19 +38,21 @@ class CreateNewUser implements CreatesNewUsers
             'body' => 'Anda telah berhasil daftar aplikasi e-signature'
         ];
         $secretKey = SecretKey::generate();
-        $saveToFile = $secretKey->serialize($input['password']);
+        $saveToFile =$secretKey->serialize($input['password']);
         $publicKey = $secretKey->getPublicKey();
         $savepublic = $publicKey->serialize();
         $folderPath = storage_path('app/public/secretkey/');
         $folderPub = storage_path('app/public/pubkey/');
-        $filename = $input['name'];
-        $nowhitespace = preg_replace("/\s+/", "", $filename);
-        $file = $folderPath . $nowhitespace . '.key';
-        $filepub = $folderPub . $nowhitespace . '.pub';
-        file_put_contents($file, $saveToFile);
-        file_put_contents($filepub, $savepublic);
+        $secretkeyname = uniqid();
+        $publickeyname = uniqid();
+        file_put_contents($folderPath . $secretkeyname . '.key', $saveToFile);
+        file_put_contents($folderPub . $publickeyname . '.pub', $savepublic);
         Mail::to($email)->send(new MyTestMail($details));
-
+        $save = new Userkeys;
+        $save->name = $input['name'];
+        $save->secretkey = $secretkeyname . '.key';
+        $save->publickey = $publickeyname . '.pub';
+        $save->save();
         return User::create([
             'name' => $input['name'],
             'email' => $input['email'],

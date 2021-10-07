@@ -21,18 +21,16 @@ class VerifyController extends Controller
 
         $request->validate([
             'file' => 'required|max:2048',
-            'pubfile' => 'required|max:2048'
+            'kode' => 'required'
         ]);
 
-        $pubname = $request->file('pubfile')->getClientOriginalName();
-
+        $pubname = $request->kode;
         $name = $request->file('file')->getClientOriginalName();
         $file_name = pathinfo($name, PATHINFO_FILENAME);
         $pubpath = storage_path('app/public/room/');
         $room = storage_path('app/public/room/' . $name);
-        $pubroom = storage_path('app/public/room/' . $pubname);
+        $pubroom = storage_path('app/public/pubkey/' . $pubname . '.pub');
         $sigpath = storage_path('app/public/signatures/' . $file_name . '.minisig' );
-        $request->file('pubfile')->move($pubpath,$pubname);
         $request->file('file')->move($pubpath,$name);
         $pk = PublicKey::fromFile($pubroom);
         $fileToCheck = MessageFile::fromFile($room);

@@ -90,8 +90,8 @@ class DecryptController extends Controller
 
 
         $files = [
-
-            storage_path('app/public/decryptedpdf/' . $file_name . '.pdf')
+            storage_path('app/public/pngfolder/' . $file_name . '.png'),
+            // storage_path('app/public/decryptedpdf/' . $file_name . '.pdf')
         ];
 
         Mail::send('emails.encryptedData', $dataemail, function($message)use($dataemail, $files) {

@@ -19,6 +19,9 @@
                         {{ __('Buat Tanda Tangan') }}
                     </x-jet-nav-link>
                     <x-jet-nav-link href="{{ route('mysignaturepad') }}" :active="request()->routeIs('mysignaturepad')">
+                        {{ __('List Tanda Tangan') }}
+                    </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('signatureview') }}" :active="request()->routeIs('signatureview')">
                         {{ __('Tanda Tangan Saya') }}
                     </x-jet-nav-link>
                 </div>

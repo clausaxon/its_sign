@@ -9,21 +9,22 @@
     </style>
 </head>
 <body>
-    <img src="{{ public_path('storage/upload/' . $signature) }}" style="position: relative; z-index:0; text-align:center; width: 100%; padding-top:60px; ">
-    <img src="{{public_path('storage/its.png')}}" style="position: absolute;
-right: 0px;
-margin-top: 70px;
-margin-right: 20px;
-text-align: center; z-index:1; width:100px; height:100px;">
+    <img src="{{ storage_path('app/public/upload/' . $signature) }}" style="position: relative; z-index:0; text-align:center; width: 100%; padding-top:60px; ">
+    <img src="{{ URL::to('/storage/public/' . $logopath)}}" style="position: absolute;
+    right: 0px;
+    margin-top: 70px;
+    margin-right: 20px;
+    text-align: center; z-index:{{$zindex}}; width:100px; height:100px;">
     <p style="position: absolute;
-  bottom: 40px;
+  bottom: 10px;
   right: 16px; z-index:2;">
-    Country : {{$countryname}} </br>
-    Region : {{$regionname}} </br>
-    Longitude : {{ $longitude }} </br>
-    Latitude : {{ $latitude }} </br>
-    {{$created_at}} UTC</br>
+    {{ $longitude }} </br>
+    {{ $latitude }} </br>
+    {{$sigcode}}</br>
+    {{$created_at ?? ''}}</br>
+    {{$countryname ?? ''}} </br>
+    {{$regionname ?? ''}} </br>
   </p>
-  <img src="{{public_path('storage/img/qr-code/img-1624729314.svg')}}" style="position: absolute; left: 0px; margin-top:180px; z-index:3;">
+  <img src="{{storage_path('app/public/' . $qrname)}}" style="width:50px; height:50px; position: absolute; left: 10px; margin-top:200px; z-index:3;">
 </body>
 </html>
